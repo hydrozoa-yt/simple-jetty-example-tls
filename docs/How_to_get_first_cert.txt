@@ -1,0 +1,2 @@
+Run the following command to get your first certificate.
+keytool -genkey -keyalg RSA -alias self_signed -keystore self_signed.keystore -storepass my_password123 -dname "CN=127.0.0.1" -noprompt

@@ -24,7 +24,7 @@ How to deploy
 3. Copy `dis/webapp/` to your production server
 4. Run `simple-jetty-example-tls.jar` in your preferred way (could be systemd)
 5. (Optional) Configure nginx to expose your service to the internet trough port 443
-6. (optional) Replace keystore with one generated using certificates from certbot and letsencrypt
+6. (Optional) Replace keystore with one generated using certificates from certbot and letsencrypt
 
 License
 =======

@@ -9,20 +9,33 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import yt.hydrozoa.webapp.handler.IndexHandler;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Security;
+import java.util.Properties;
 
 /**
  * @author hydrozoa <https://www.youtube.com/hydrozoa>
  */
-public class WebappServer implements Runnable {
+public class WebappServer implements Runnable, IService {
 
-    private final String KEYSTORE_PATH = "keystore/self_signed.keystore";
-    private final String KEYSTORE_PASSWORD = "my_password123";
+    /**
+     * Configuration of server read from res/config.properties
+     */
+    private Properties properties;
 
     @Override
     public void run() {
         System.out.println("Initializing...");
+
+        properties = new Properties();
+        try {
+            properties.load(Files.newInputStream(Path.of("res/config.properties")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Security.insertProviderAt(new OpenSSLProvider(), 1);
 
@@ -30,9 +43,9 @@ public class WebappServer implements Runnable {
         Server server = new Server();
         setupServer(
                 server,
-                8443,
-                KEYSTORE_PATH,
-                KEYSTORE_PASSWORD
+                Integer.parseInt(properties.getProperty("app.secure_port")),
+                properties.getProperty("keystore.path"),
+                properties.getProperty("keystore.password")
         );
 
         try {
@@ -114,5 +127,10 @@ public class WebappServer implements Runnable {
         ContextHandler newContext = new ContextHandler(contextPath);
         newContext.setHandler(handler);
         handlerCollection.addHandler(newContext);
+    }
+
+    @Override
+    public Properties getProperties() {
+        return properties;
     }
 }

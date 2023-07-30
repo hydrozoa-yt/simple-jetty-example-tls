@@ -5,14 +5,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import yt.hydrozoa.webapp.IService;
 import yt.hydrozoa.webapp.WebappServer;
 
 import java.io.IOException;
 
-
+/**
+ * @author hydrozoa <https://www.youtube.com/hydrozoa>
+ */
 public class IndexHandler extends AbstractHandler {
 
-    private WebappServer server;
+    private IService service;
 
     private final String PAYLOAD = """
             <html>
@@ -25,8 +28,8 @@ public class IndexHandler extends AbstractHandler {
             </html>
             """;
 
-    public IndexHandler(WebappServer server) {
-        this.server=server;
+    public IndexHandler(IService service) {
+        this.service = service;
     }
 
     @Override
